@@ -1,0 +1,17 @@
+.wallet-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wallet-box h1 {
+  font-size: 36px;
+}
+
+.wallet-box p {
+  color: #858585;
+}
+
+.sup {
+  font-size: 12px;
+}

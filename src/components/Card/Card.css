@@ -1,0 +1,33 @@
+.loan-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+}
+
+.card-lg {
+  padding: 20px;
+}
+
+.card-md {
+  padding: 10px;
+  font-size: 12px;
+}
+
+.card-md div {
+  text-align: center;
+}
+
+.card-md small {
+  font-size: 9px;
+}
+
+.card-md h3,
+p {
+  color: #838383;
+  font-weight: 700;
+}
+
+.card-sm {
+  padding: 5px 20px;
+}

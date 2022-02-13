@@ -1,0 +1,31 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #858585;
+  margin-top: 20px;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 30px;
+}
+
+form p {
+  color: #858585;
+}
+
+label {
+  margin-bottom: 5px;
+}
+
+.input {
+  height: 40px;
+  padding: 0 10px;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 400px) {
+  label {
+    font-size: 14px;
+  }
+}
