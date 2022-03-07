@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import MonoConnect from "@mono.co/connect.js";
+import { useEffect, useState } from "react";
+// import MonoConnect from "@mono.co/connect.js";
 
 import Button from "../components/Button/Button";
 import Card from "../components/Card/Card";
@@ -7,31 +7,78 @@ import LoanBox from "../components/LoanBox/LoanBox";
 import Navbar from "../components/Navbar/Navbar";
 import WalletBalance from "../components/WalletBalance/WalletBalance";
 
-const Loans = () => {
-  const monoConnect = useMemo(() => {
-    const monoInstance = new MonoConnect({
-      key: "test_pk_jpjEQfjGVIj7HUkJDwto",
-      scope: "payments",
-      data: {
-        type: "onetime-debit", // onetime-debit || recurring-debit
-        amount: 1500000, // amount in kobo
-        description: "Loan Repayment",
-        reference: Date.now(),
-        redirect_url: window.location.origin + "/done",
-        meta: {
-          fullname: "Nsiegbunam Jane",
-          address: "Ajah, Lagos",
-        },
-      },
-      onSuccess: (chargeObject) => {
-        console.log(`charged successfully`, chargeObject);
-      },
-    });
+const Loans = (props) => {
+  const [paymentLink, setPaymentLink] = useState("");
+  // const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    monoInstance.setup();
+  // const secret_key = "test_sk_DBxW4YRkBGgA80s1T8KY";
 
-    return monoInstance;
-  }, []);
+  useEffect(() => {
+    window.open(paymentLink, "_self");
+  }, [paymentLink]);
+
+  const initiatePaymentHandler = async () => {
+    const data = {
+      amount: "20000",
+      type: "onetime-debit",
+      description: "Bags",
+      reference: Date.now(),
+      redirect_url: window.location.origin + "/loans",
+      meta: {
+        fullname: "Nsiegbunam Jane",
+        address: "Ajah, Lagos",
+      },
+    };
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://api.withmono.com/v1/payments/initiate`,
+        {
+          method: "post",
+          headers: {
+            "mono-sec-key": "test_sk_DBxW4YRkBGgA80s1T8KY",
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const res = await response.json();
+      console.log(res.payment_link);
+      setLoading(false);
+      setPaymentLink(res.payment_link);
+    } catch (error) {
+      setLoading(false);
+      console.log(error.response);
+    }
+  };
+  // const monoConnect = useMemo(() => {
+  //   const monoInstance = new MonoConnect({
+  //     key: "test_pk_jpjEQfjGVIj7HUkJDwto",
+  //     scope: "payments",
+  //     data: {
+  //       type: "onetime-debit",
+  //       amount: 20000,
+  //       description: "Loan Repayment",
+  //       account_id: "620a45ddc640fa413bcd8253",
+  //       reference: Date.now(),
+  //       redirect_url: window.location.origin + "/done",
+  //       meta: {
+  //         fullname: "Nsiegbunam Jane",
+  //         address: "Ajah, Lagos",
+  //       },
+  //     },
+  //     onSuccess: (chargeObject) => {
+  //       console.log(`charged successfully`, chargeObject);
+  //     },
+  //   });
+
+  //   monoInstance.setup();
+
+  //   return monoInstance;
+  // }, []);
 
   return (
     <>
@@ -54,9 +101,9 @@ const Loans = () => {
             paymentType="Onetime Payment"
           >
             <Button
-              label="Make Payment"
+              label={loading === true ? "Loading..." : "Make Payment"}
               size="sm"
-              onClick={() => monoConnect.open()}
+              onClick={initiatePaymentHandler}
             />
           </LoanBox>
           <LoanBox

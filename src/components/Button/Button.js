@@ -1,7 +1,7 @@
 import "./Button.css";
 
 const Button = (props) => {
-  const { label, size, disabled = false } = props;
+  const { label, type, size, disabled = false } = props;
 
   let BTN_SIZE = "btn-lg";
 
@@ -16,7 +16,7 @@ const Button = (props) => {
   return (
     <button
       disabled={disabled}
-      type="button"
+      type={type || "button"}
       className={`${!disabled ? `button` : BTN_DISABLED} ${BTN_SIZE}`}
       {...props}
     >

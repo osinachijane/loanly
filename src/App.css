@@ -69,6 +69,18 @@ a {
   background-color: #fff;
   width: 400px;
   padding: 50px;
+  max-height: 520px;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
 .container {
@@ -85,6 +97,24 @@ a {
   width: 50%;
   margin: 0 auto;
   padding-top: 50px;
+}
+
+.new_acc small {
+  color: rgb(223, 74, 74);
+}
+
+.new_acc.green h4 {
+  color: rgb(63, 194, 63) !important;
+}
+
+.form-profile {
+  width: 500px;
+  padding: 20px;
+}
+
+.new_acc {
+  text-align: center;
+  margin: 10px auto;
 }
 
 @media screen and (max-width: 500px) {

@@ -6,3 +6,7 @@
   height: 65px;
   box-shadow: 0 4px 13px rgb(0 0 0 / 5%);
 }
+
+.profile-wrapper a:first-child {
+  margin-right: 20px;
+}
