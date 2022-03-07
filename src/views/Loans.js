@@ -6,6 +6,7 @@ import Card from "../components/Card/Card";
 import LoanBox from "../components/LoanBox/LoanBox";
 import Navbar from "../components/Navbar/Navbar";
 import WalletBalance from "../components/WalletBalance/WalletBalance";
+import API from "../services/apiService";
 
 const Loans = (props) => {
   const [paymentLink, setPaymentLink] = useState("");
@@ -20,7 +21,7 @@ const Loans = (props) => {
 
   const initiatePaymentHandler = async () => {
     const data = {
-      amount: "20000",
+      amount: "70000",
       type: "onetime-debit",
       description: "Bags",
       reference: Date.now(),
@@ -31,6 +32,7 @@ const Loans = (props) => {
       },
     };
     setLoading(true);
+    await postTransaction(data);
     try {
       const response = await fetch(
         `https://api.withmono.com/v1/payments/initiate`,
@@ -52,6 +54,20 @@ const Loans = (props) => {
     } catch (error) {
       setLoading(false);
       console.log(error.response);
+    }
+  };
+
+  const postTransaction = async (data) => {
+    const clean_data = {
+      payment_type: data.type,
+      amount: data.amount,
+      description: data.description,
+      reference: data.reference,
+    };
+    try {
+      await API.postTransaction(clean_data);
+    } catch (error) {
+      console.log(error.response.data.message);
     }
   };
   // const monoConnect = useMemo(() => {

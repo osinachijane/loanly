@@ -37,4 +37,12 @@ export default {
       headers: this.headers(),
     });
   },
+  postTransaction(data) {
+    return axios({
+      method: "post",
+      url: `${this.url}/transactions/create`,
+      headers: this.headers(),
+      data,
+    });
+  },
 };
