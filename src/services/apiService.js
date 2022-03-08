@@ -45,4 +45,11 @@ export default {
       data,
     });
   },
+  getTransactions(reference = "") {
+    return axios({
+      method: "get",
+      url: `${this.url}/transactions?reference=${reference}&limit=5`,
+      headers: this.headers(),
+    });
+  },
 };

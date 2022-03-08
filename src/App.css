@@ -83,10 +83,20 @@ a {
   -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
+.centralize {
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+}
+
 .container {
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
+}
+
+.container.transactions {
+  max-width: 1300px;
 }
 
 .container.center {
@@ -107,6 +117,33 @@ a {
   color: rgb(63, 194, 63) !important;
 }
 
+.red p {
+  background-color: rgb(223, 74, 74);
+  color: #fff;
+  width: fit-content;
+  padding: 3px 5px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+.green p {
+  background-color: rgb(63, 194, 63);
+  color: #fff;
+  width: fit-content;
+  padding: 3px 5px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
+.orange p {
+  background-color: rgb(243, 201, 86);
+  color: #fff;
+  width: fit-content;
+  padding: 3px 5px;
+  border-radius: 6px;
+  font-size: 11px;
+}
+
 .form-profile {
   width: 500px;
   padding: 20px;
@@ -115,6 +152,46 @@ a {
 .new_acc {
   text-align: center;
   margin: 10px auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  text-align: left;
+}
+
+th {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #8c8fa3;
+  padding: 12px 1px;
+}
+
+td {
+  font-size: 0.85rem;
+  padding: 20px 1px;
+  color: #55586f;
+}
+
+tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.card-table {
+  background-color: #fff;
+  padding: 10px 50px 50px;
+}
+
+.transactions h2 {
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 500px) {

@@ -21,7 +21,7 @@ const Loans = (props) => {
 
   const initiatePaymentHandler = async () => {
     const data = {
-      amount: "70000",
+      amount: "45000",
       type: "onetime-debit",
       description: "Bags",
       reference: Date.now(),

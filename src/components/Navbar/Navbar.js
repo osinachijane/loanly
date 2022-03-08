@@ -20,6 +20,7 @@ const Navbar = () => {
       </Link>
 
       <div className="profile-wrapper">
+        <Link to="/transactions">Transactions</Link>
         <Link to="/account">Account</Link>
         <Link to="#">{email}</Link>
       </div>

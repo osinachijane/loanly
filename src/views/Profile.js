@@ -36,6 +36,11 @@ const Profile = (props) => {
   return (
     <>
       <Navbar />
+      {!user && (
+        <div className="centralize">
+          <h1>Loading...</h1>
+        </div>
+      )}
       {user && (
         <div className="section">
           <div className="container">
