@@ -30,6 +30,13 @@ export default {
       data,
     });
   },
+  getUsers() {
+    return axios({
+      method: "get",
+      url: `${this.url}/users`,
+      headers: this.headers(),
+    });
+  },
   getProfile() {
     return axios({
       method: "get",

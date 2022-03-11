@@ -26,10 +26,6 @@ const Loans = (props) => {
       description: "Bags",
       reference: Date.now(),
       redirect_url: window.location.origin + "/loans",
-      meta: {
-        fullname: "Nsiegbunam Jane",
-        address: "Ajah, Lagos",
-      },
     };
     setLoading(true);
     await postTransaction(data);
@@ -39,7 +35,7 @@ const Loans = (props) => {
         {
           method: "post",
           headers: {
-            "mono-sec-key": "test_sk_DBxW4YRkBGgA80s1T8KY",
+            "mono-sec-key": process.env.REACT_APP_MONO_SEC_KEY,
             Accept: "application/json",
             "Content-Type": "application/json",
           },
@@ -70,32 +66,6 @@ const Loans = (props) => {
       console.log(error.response.data.message);
     }
   };
-  // const monoConnect = useMemo(() => {
-  //   const monoInstance = new MonoConnect({
-  //     key: "test_pk_jpjEQfjGVIj7HUkJDwto",
-  //     scope: "payments",
-  //     data: {
-  //       type: "onetime-debit",
-  //       amount: 20000,
-  //       description: "Loan Repayment",
-  //       account_id: "620a45ddc640fa413bcd8253",
-  //       reference: Date.now(),
-  //       redirect_url: window.location.origin + "/done",
-  //       meta: {
-  //         fullname: "Nsiegbunam Jane",
-  //         address: "Ajah, Lagos",
-  //       },
-  //     },
-  //     onSuccess: (chargeObject) => {
-  //       console.log(`charged successfully`, chargeObject);
-  //     },
-  //   });
-
-  //   monoInstance.setup();
-
-  //   return monoInstance;
-  // }, []);
-
   return (
     <>
       <Navbar />
