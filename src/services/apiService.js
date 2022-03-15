@@ -55,7 +55,7 @@ export default {
   getTransactions(reference = "") {
     return axios({
       method: "get",
-      url: `${this.url}/transactions?reference=${reference}&limit=5`,
+      url: `${this.url}/transactions/user?reference=${reference}&limit=5`,
       headers: this.headers(),
     });
   },

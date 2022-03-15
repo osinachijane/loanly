@@ -14,6 +14,7 @@ const Landing = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(false);
+  const [error, setError] = useState(false);
   const [form, setForm] = useState("login");
 
   const history = useHistory();
@@ -39,7 +40,7 @@ const Landing = () => {
       setLoading(false);
       history.push("/loans");
     } catch (error) {
-      setResponse(error.response.data);
+      setError(error.response.data);
       setLoading(false);
     }
   };
@@ -62,7 +63,8 @@ const Landing = () => {
       setForm("login");
       setResponse("Registration successful, please login");
     } catch (error) {
-      setResponse(error.response.data);
+      console.log(error.response.data);
+      setError(error.response.data);
       setLoading(false);
     }
   };
@@ -84,12 +86,14 @@ const Landing = () => {
             type="email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
+            required
           />
           <Input
             label="Password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+            required
           />
 
           <Button type="submit" label={loading ? <Loader /> : "Login"} />
@@ -115,36 +119,42 @@ const Landing = () => {
             type="text"
             onChange={(e) => setFirstName(e.target.value)}
             value={firstName}
+            required
           />
           <Input
             label="Last Name"
             type="text"
             onChange={(e) => setLastName(e.target.value)}
             value={lastName}
+            required
           />
           <Input
             label="Email"
             type="email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
+            required
           />
           <Input
             label="Phone Number"
             type="text"
             onChange={(e) => setPhone(e.target.value)}
             value={phone}
+            required
           />
           <Input
             label="House Address"
             type="text"
             onChange={(e) => setAddress(e.target.value)}
             value={address}
+            required
           />
           <Input
             label="Password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+            required
           />
 
           <Button
@@ -176,9 +186,9 @@ const Landing = () => {
             <h4>{response}</h4>
           </div>
           {display}
-          {response && (
+          {error && (
             <div className="new_acc">
-              <small>{response.message}</small>
+              <small>{error.message}</small>
             </div>
           )}
         </div>
