@@ -37,7 +37,7 @@ const Loans = (props) => {
   const initiatePaymentHandler = async (loan) => {
     const { _id, amount, description } = loan;
     const data = {
-      amount,
+      amount: amount * 100,
       type: "onetime-debit",
       description,
       reference: Date.now(),
