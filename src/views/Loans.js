@@ -136,7 +136,7 @@ const Loans = (props) => {
                   label="Request New Loan"
                   onClick={() => {
                     setErrorPaid(false);
-                    const paid = loans
+                    const paid = loans.length
                       ? loans.find((loan) => loan.paid === true)
                       : false;
                     if (paid) {
