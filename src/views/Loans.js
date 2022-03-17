@@ -156,7 +156,7 @@ const Loans = (props) => {
               {loans?.map((loan, i) => (
                 <LoanBox
                   date={loan.created_at}
-                  amount={Number(loan.amount / 100).toLocaleString()}
+                  amount={loan.amount}
                   dueDate={loan.due_date}
                   paymentType={loan.payment_type}
                 >
