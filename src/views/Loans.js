@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import Button from "../components/Button/Button";
 import Card from "../components/Card/Card";
+import Input from "../components/Input/Input";
 import LoanBox from "../components/LoanBox/LoanBox";
 import Navbar from "../components/Navbar/Navbar";
 import WalletBalance from "../components/WalletBalance/WalletBalance";
@@ -10,24 +11,44 @@ import API from "../services/apiService";
 
 const Loans = (props) => {
   const [paymentLink, setPaymentLink] = useState("");
-  // const [copied, setCopied] = useState(false);
+  const [newuser, setNewuser] = useState(true);
+  const [loans, setLoans] = useState([]);
+  const [errorPaid, setErrorPaid] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [loadingLoans, setLoadingLoans] = useState(false);
+  const [requestBtnClicked, setRequestBtnClicked] = useState(false);
+
+  const [loanForm, setLoanForm] = useState({
+    amount: "",
+    description: "",
+    payment_type: "onetime-debit",
+    due_date: "",
+  });
 
   // const secret_key = "test_sk_DBxW4YRkBGgA80s1T8KY";
 
   useEffect(() => {
-    window.open(paymentLink, "_self");
+    if (paymentLink) {
+      window.open(paymentLink, "_self");
+    }
+    getLoans();
   }, [paymentLink]);
 
-  const initiatePaymentHandler = async () => {
+  const initiatePaymentHandler = async (loan) => {
+    const { _id, amount, description } = loan;
     const data = {
-      amount: "45000",
+      amount,
       type: "onetime-debit",
-      description: "Bags",
+      description,
       reference: Date.now(),
       redirect_url: window.location.origin + "/loans",
+      meta: {
+        loan_id: _id,
+      },
     };
     setLoading(true);
+    setErrorPaid(false);
     await postTransaction(data);
     try {
       const response = await fetch(
@@ -44,8 +65,8 @@ const Loans = (props) => {
       );
 
       const res = await response.json();
-      console.log(res.payment_link);
       setLoading(false);
+      console.log(res);
       setPaymentLink(res.payment_link);
     } catch (error) {
       setLoading(false);
@@ -66,64 +87,148 @@ const Loans = (props) => {
       console.log(error.response.data.message);
     }
   };
+
+  const getLoans = async () => {
+    setLoadingLoans(true);
+    try {
+      const res = await API.getLoans();
+      setLoans(res.data.data);
+      setLoadingLoans(false);
+    } catch (error) {
+      setLoadingLoans(false);
+      console.log(error.response.data.message);
+    }
+  };
+
+  const handleChange = (e) => {
+    setLoanForm({ ...loanForm, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoadingSubmit(true);
+    try {
+      const res = await API.postLoan(loanForm);
+      setRequestBtnClicked(false);
+      setLoadingSubmit(false);
+      getLoans();
+    } catch (error) {
+      setLoadingSubmit(false);
+      console.log(error.response.data.message);
+    }
+  };
+
   return (
     <>
       <Navbar />
       <div className="section">
         <div className="container">
           <div className="mt-50" />
+          {errorPaid && (
+            <p style={{ textAlign: "center", marginBottom: 10, color: "red" }}>
+              Sorry, you have to settle current loan to continue !{" "}
+            </p>
+          )}
           <Card>
             <WalletBalance currency="NGN" amount={4500} />
             <div>
-              <Button label="Request New Loan" />
+              {!requestBtnClicked && (
+                <Button
+                  label="Request New Loan"
+                  onClick={() => {
+                    setErrorPaid(false);
+                    const paid = loans?.find((loan) => loan.paid === true);
+                    if (paid) {
+                      setRequestBtnClicked(true);
+                    } else {
+                      setErrorPaid(true);
+                    }
+                  }}
+                />
+              )}
             </div>
           </Card>
 
           <div className="mt-50" />
-          <LoanBox
-            date="Feb 4, 2022"
-            amount={15000}
-            dueDate="Mar 12, 2022"
-            paymentType="Onetime Payment"
-          >
-            <Button
-              label={loading === true ? "Loading..." : "Make Payment"}
-              size="sm"
-              onClick={initiatePaymentHandler}
-            />
-          </LoanBox>
-          <LoanBox
-            date="December 2, 2021"
-            amount={36750}
-            dueDate="December 12, 2021"
-            paymentType="Onetime Payment"
-          >
-            <Button label="Payment Made" size="sm" disabled />
-          </LoanBox>
-          <LoanBox
-            date="Sept 4, 2021"
-            amount={140000}
-            dueDate="Sept 12, 2021"
-            paymentType="Onetime Payment"
-          >
-            <Button label="Payment Made" size="sm" disabled />
-          </LoanBox>
-          <LoanBox
-            date="June 4, 202q"
-            amount={50000}
-            dueDate="Jul 7, 2021"
-            paymentType="Onetime Payment"
-          >
-            <Button label="Payment Made" size="sm" disabled />
-          </LoanBox>
-          <LoanBox
-            date="Feb 4, 2021"
-            amount={75000}
-            dueDate="Mar 22, 2021"
-            paymentType="Onetime Payment"
-          >
-            <Button label="Payment Made" size="sm" disabled />
-          </LoanBox>
+          {!requestBtnClicked ? (
+            <>
+              {loans?.map((loan, i) => (
+                <LoanBox
+                  date={loan.created_at}
+                  amount={Number(loan.amount / 100).toLocaleString()}
+                  dueDate={loan.due_date}
+                  paymentType={loan.payment_type}
+                >
+                  <Button
+                    disabled={loan.paid}
+                    label={
+                      !loan.paid && loading ? "Loading..." : "Make Payment"
+                    }
+                    size="sm"
+                    onClick={() => initiatePaymentHandler(loan)}
+                  />
+                </LoanBox>
+              ))}
+              {!loadingLoans && !loans.length && (
+                <h2 style={{ display: "flex" }}>NO EXISTING LOANS!</h2>
+              )}
+              {loadingLoans && <h2 style={{ display: "flex" }}>Loading....</h2>}
+            </>
+          ) : (
+            <Card>
+              <form className="form-profile" onSubmit={handleSubmit}>
+                <div className="logo-bo">
+                  <h2 className="logo">Request Loan</h2>
+                </div>
+                <Input
+                  label="Amount"
+                  type="text"
+                  value={loanForm.amount}
+                  onChange={handleChange}
+                  name="amount"
+                  required
+                />
+                <Input
+                  label="Description"
+                  type="text"
+                  value={loanForm.description}
+                  onChange={handleChange}
+                  name="description"
+                  required
+                />
+
+                <Input
+                  label="Payment Type"
+                  type="text"
+                  value={loanForm.payment_type}
+                />
+
+                <Input
+                  label="Repayment Date"
+                  type="date"
+                  value={loanForm.due_date}
+                  onChange={handleChange}
+                  name="due_date"
+                  required
+                />
+                <div style={{ marginBottom: 30 }} />
+                <Button
+                  type="submit"
+                  // onClick={handleSubmit}
+                  label="Submit"
+                  disabled={loadingSubmit}
+                />
+                <div style={{ marginBottom: 10 }} />
+                <Button
+                  transparent
+                  onClick={() => {
+                    setRequestBtnClicked(false);
+                  }}
+                  label={"Cancel"}
+                />
+              </form>
+            </Card>
+          )}
         </div>
       </div>
     </>
@@ -131,3 +236,13 @@ const Loans = (props) => {
 };
 
 export default Loans;
+{
+  /* <LoanBox
+date="December 2, 2021"
+amount={36750}
+dueDate="December 12, 2021"
+paymentType="Onetime Payment"
+>
+<Button label="Payment Made" size="sm" disabled />
+</LoanBox> */
+}

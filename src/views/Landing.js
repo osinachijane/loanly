@@ -78,9 +78,7 @@ const Landing = () => {
           <div className="logo-box">
             <h2 className="logo">Sign in to Loanly</h2>
           </div>
-          <p>
-            To sign in, please type in your email address and your password.
-          </p>
+          <p>To sign in, please type in your email and your password.</p>
           <Input
             label="Email"
             type="email"

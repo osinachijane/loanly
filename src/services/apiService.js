@@ -59,4 +59,19 @@ export default {
       headers: this.headers(),
     });
   },
+  postLoan(data) {
+    return axios({
+      method: "post",
+      url: `${this.url}/loans/create`,
+      headers: this.headers(),
+      data,
+    });
+  },
+  getLoans() {
+    return axios({
+      method: "get",
+      url: `${this.url}/loans/user?limit=5`,
+      headers: this.headers(),
+    });
+  },
 };

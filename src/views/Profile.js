@@ -8,7 +8,6 @@ import API from "../services/apiService";
 
 const Profile = (props) => {
   const [response, setResponse] = useState(false);
-
   const history = useHistory();
 
   useEffect(() => {

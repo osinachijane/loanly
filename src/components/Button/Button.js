@@ -1,7 +1,7 @@
 import "./Button.css";
 
 const Button = (props) => {
-  const { label, type, size, disabled = false } = props;
+  const { label, type, size, disabled = false, transparent } = props;
 
   let BTN_SIZE = "btn-lg";
 
@@ -17,7 +17,9 @@ const Button = (props) => {
     <button
       disabled={disabled}
       type={type || "button"}
-      className={`${!disabled ? `button` : BTN_DISABLED} ${BTN_SIZE}`}
+      className={`${!disabled ? `button` : BTN_DISABLED} ${BTN_SIZE} ${
+        transparent ? `transparent` : `primary`
+      }`}
       {...props}
     >
       {label}

@@ -1,9 +1,13 @@
 .button {
   width: 100%;
-  background-color: #000;
-  color: #fff;
+
   border: none;
   cursor: pointer;
+}
+
+.primary {
+  background-color: #000;
+  color: #fff;
 }
 
 .button:hover {
@@ -31,4 +35,11 @@
   background-color: rgb(182, 182, 182);
   color: #fff;
   border: none;
+  width: 100%;
+}
+
+.transparent {
+  border: 1px solid #000;
+  background-color: #fff;
+  color: #000;
 }
