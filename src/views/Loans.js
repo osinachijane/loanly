@@ -138,7 +138,7 @@ const Loans = (props) => {
                     setErrorPaid(false);
                     const paid = loans.length
                       ? loans.find((loan) => loan.paid === true)
-                      : false;
+                      : true;
                     if (paid) {
                       setRequestBtnClicked(true);
                     } else {
