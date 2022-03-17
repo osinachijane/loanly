@@ -11,7 +11,6 @@ import API from "../services/apiService";
 
 const Loans = (props) => {
   const [paymentLink, setPaymentLink] = useState("");
-  const [newuser, setNewuser] = useState(true);
   const [loans, setLoans] = useState([]);
   const [errorPaid, setErrorPaid] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -137,7 +136,9 @@ const Loans = (props) => {
                   label="Request New Loan"
                   onClick={() => {
                     setErrorPaid(false);
-                    const paid = loans?.find((loan) => loan.paid === true);
+                    const paid = loans
+                      ? loans.find((loan) => loan.paid === true)
+                      : false;
                     if (paid) {
                       setRequestBtnClicked(true);
                     } else {
