@@ -35,15 +35,14 @@ const Loans = (props) => {
   }, [paymentLink]);
 
   const initiatePaymentHandler = async (loan) => {
-    const { _id, amount, description } = loan;
     const data = {
-      amount: amount * 100,
+      amount: loan.amount * 100,
       type: "onetime-debit",
-      description,
+      description: loan.description,
       reference: Date.now(),
       redirect_url: window.location.origin + "/loans",
       meta: {
-        loan_id: _id,
+        loan_id: loan._id,
       },
     };
     setLoading(true);
@@ -157,6 +156,7 @@ const Loans = (props) => {
                 <LoanBox
                   date={loan.created_at}
                   amount={loan.amount}
+                  description={loan.description}
                   dueDate={loan.due_date}
                   paymentType={loan.payment_type}
                 >

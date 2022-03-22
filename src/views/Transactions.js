@@ -62,7 +62,7 @@ const Transactions = (props) => {
                       <tr key={i}>
                         <td>{tranx.user}</td>
                         <td>{tranx.payment_type}</td>
-                        <td>{tranx.amount}</td>
+                        <td>{tranx.amount / 100}</td>
                         <td>{tranx.description}</td>
                         <td>{tranx.reference}</td>
                         <td className={`capitalize ${pill}`}>
