@@ -74,4 +74,11 @@ export default {
       headers: this.headers(),
     });
   },
+  initiatePayment(data) {
+    return axios({
+      method: "post",
+      url: `${this.url}/transactions/initiate-payment`,
+      data,
+    });
+  },
 };

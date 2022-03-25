@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 // import MonoConnect from "@mono.co/connect.js";
 
 import Button from "../components/Button/Button";
@@ -49,23 +49,9 @@ const Loans = (props) => {
     setErrorPaid(false);
     await postTransaction(data);
     try {
-      const response = await fetch(
-        `https://api.withmono.com/v1/payments/initiate`,
-        {
-          method: "post",
-          headers: {
-            "mono-sec-key": process.env.REACT_APP_MONO_SEC_KEY,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      const res = await response.json();
+      const res = await API.initiatePayment(data);
       setLoading(false);
-      console.log(res);
-      setPaymentLink(res.payment_link);
+      setPaymentLink(res.data.data.payment_link);
     } catch (error) {
       setLoading(false);
       console.log(error.response);
@@ -153,22 +139,24 @@ const Loans = (props) => {
           {!requestBtnClicked ? (
             <>
               {loans?.map((loan, i) => (
-                <LoanBox
-                  date={loan.created_at}
-                  amount={loan.amount}
-                  description={loan.description}
-                  dueDate={loan.due_date}
-                  paymentType={loan.payment_type}
-                >
-                  <Button
-                    disabled={loan.paid}
-                    label={
-                      !loan.paid && loading ? "Loading..." : "Make Payment"
-                    }
-                    size="sm"
-                    onClick={() => initiatePaymentHandler(loan)}
-                  />
-                </LoanBox>
+                <Fragment key={i}>
+                  <LoanBox
+                    date={loan.created_at}
+                    amount={loan.amount}
+                    description={loan.description}
+                    dueDate={loan.due_date}
+                    paymentType={loan.payment_type}
+                  >
+                    <Button
+                      disabled={loan.paid}
+                      label={
+                        !loan.paid && loading ? "Loading..." : "Make Payment"
+                      }
+                      size="sm"
+                      onClick={() => initiatePaymentHandler(loan)}
+                    />
+                  </LoanBox>
+                </Fragment>
               ))}
               {!loadingLoans && !loans.length && (
                 <h2 style={{ display: "flex" }}>NO EXISTING LOANS!</h2>
